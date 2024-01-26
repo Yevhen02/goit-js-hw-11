@@ -10,8 +10,8 @@ const refs = {
   loaderElem: document.querySelector('.loader'),
 };
 
-const BASE_URL = 'https://pixabay.com';
-const END_POINT = '/api';
+const BASE_URL = 'https://pixabay.com/';
+const END_POINT = '/api/';
 const API_KEY = '42034785-c436f003c310c5b5229f24b7b';
 
 refs.formElem.addEventListener('submit', event => {
@@ -49,6 +49,7 @@ function fetchImages(url) {
     if (!resp.ok) {
       throw new Error(resp.status);
     }
+    console.log(resp);
     return resp.json();
   });
 }
