@@ -14,14 +14,19 @@ const BASE_URL = 'https://pixabay.com/';
 const END_POINT = '/api';
 const API_KEY = '42034785-c436f003c310c5b5229f24b7b';
 
+let query = '';
+
 refs.formElem.addEventListener('submit', event => {
   event.preventDefault();
-  const query = refs.formElem.query.value.trim();
+
+  query = refs.formElem.query.value.trim();
+
   if (!query) {
     createMessage(`Please type a value in the "Search images" field!`);
     return;
   }
   const url = `${BASE_URL}${END_POINT}?key=${API_KEY}&q=${query}&image_type=photo&orientation=horizontal&safesearch=true`;
+
   fetchImages(url)
     .then(data => {
       if (data.hits.length === 0) {
