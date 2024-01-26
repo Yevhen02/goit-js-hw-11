@@ -1,107 +1,115 @@
-import SimpleLightbox from 'simplelightbox';
-import 'simplelightbox/dist/simple-lightbox.min.css';
 import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
+import SimpleLightbox from 'simplelightbox';
+import 'simplelightbox/dist/simple-lightbox.min.css';
 
-const refs = {
-  formElem: document.querySelector('.search-form'),
-  galleryElem: document.querySelector('.gallery'),
-  searchBtnElem: document.querySelector('.search-btn'),
-  loaderElem: document.querySelector('.loader'),
+const url = 'https://pixabay.com/api/';
+
+const searchParams = {
+  key: '42034785-c436f003c310c5b5229f24b7b',
+  q: '',
+  image_type: 'photo',
+  orientation: 'horizontal',
+  safesearch: 'true',
+  per_page: 27,
 };
 
-const BASE_URL = 'https://pixabay.com/';
-const END_POINT = 'api';
-const API_KEY = '42034785-c436f003c310c5b5229f24b7b';
-
-refs.formElem.addEventListener('submit', event => {
-  event.preventDefault();
-
-  const query = refs.formElem.query.value.trim();
-
-  if (!query) {
-    createMessage(`Please type a value in the "Search images" field!`);
-    return;
-  }
-  const url = `${BASE_URL}${END_POINT}?key=${API_KEY}&q=${query}&image_type=photo&orientation=horizontal&safesearch=true`;
-
-  fetchImages(url)
-    .then(data => {
-      if (data.hits.length === 0) {
-        createMessage(
-          `Sorry, there are no images matching your search query. Please try again!`
-        );
-        showLoader(false);
-      }
-      refs.galleryElem.innerHTML = createMarkup(data.hits);
-      showLoader(false);
-
-      const lightbox = new SimpleLightbox('.gallery-item a', {
-        captionsData: 'alt',
-        captionDelay: 250,
-      });
-
-      refs.formElem.reset();
-      lightbox.refresh();
-    })
-    .catch(error => console.error(error));
+const simpleGallery = new SimpleLightbox('.gallery a', {
+  overlayOpacity: 0.7,
+  captionsData: 'alt',
+  captionDelay: 250,
 });
 
-function fetchImages(url) {
-  showLoader(true);
+const form = document.querySelector('.gallery-form');
+const searchInput = document.querySelector('.search-input');
+const gallery = document.querySelector('.gallery');
+const loader = document.querySelector('.loader');
 
-  return fetch(url).then(resp => {
-    if (!resp.ok) {
-      throw new Error(resp.status);
+form.addEventListener('submit', searchPhotos);
+
+function searchPhotos(event) {
+  event.preventDefault();
+  if (!searchInput.value.trim()) {
+    showErrorMessage('Please fill in the search field');
+    return;
+  }
+
+  const form = event.currentTarget;
+
+  fetchPhotos()
+    .then(photos => createGallery(photos))
+    .catch(error => showErrorMessage(`Something was wrong ${error}`))
+    .finally(() => {
+      form.reset();
+      simpleGallery.refresh();
+    });
+}
+
+function fetchPhotos() {
+  gallery.innerHTML = '';
+  loader.style.display = 'inline-block';
+  searchParams.q = searchInput.value.trim();
+
+  const searchParamsStringURL = new URLSearchParams(searchParams).toString();
+
+  return fetch(`${url}?${searchParamsStringURL}`).then(response => {
+    if (!response.ok) {
+      throw new Error(response.status);
     }
-    return resp.json();
+    return response.json();
   });
 }
 
-function createMarkup(images) {
-  return images
+function createGallery(photos) {
+  if (!photos.total) {
+    showErrorMessage(
+      'Sorry, there are no images matching your search query. Please, try again!'
+    );
+    loader.style.display = 'none';
+    return;
+  }
+  const markup = photos.hits
     .map(
       ({
-        webformatURL,
         largeImageURL,
+        webformatURL,
         tags,
         likes,
         views,
         comments,
         downloads,
-      }) =>
-        `
-        <li class="gallery-item">
-  <a class="gallery-link" href="${largeImageURL}">
-    <img
-      class="gallery-image"
-      src="${webformatURL}"
-      alt="${tags}"
-    />
-    <p class="gallery-descr">Likes: <span class="descr-span">${likes}</span> Views: <span class="descr-span">${views}</span> Comments: <span class="descr-span">${comments}</span> Downloads: <span class="descr-span">${downloads}</span></p>
-  </a>
-</li>`
+      }) => {
+        return `<li class="gallery-item">
+          <a href="${largeImageURL}">
+            <img class="api-img" src="${webformatURL}" alt="${tags}">
+            <div class="img-desc">
+            <p class="para">Likes: <span class="span"> <br/>${likes}</span></p>
+            <p class="para">Views: <span class="span"> <br/>${views}</span></p>
+            <p class="para">Comments: <span class="span"> <br/>${comments}</span></p>
+            <p class="para">Downloads: <span class="span"> <br/>${downloads}</span></p>
+            </div>
+          </a>
+        </li>`;
+      }
     )
     .join('');
+
+  gallery.insertAdjacentHTML('afterbegin', markup);
+  loader.style.display = 'none';
 }
 
-function createMessage(message) {
+function showErrorMessage(message) {
   iziToast.show({
+    position: 'bottomCenter',
     title: 'X',
     titleColor: '#fff',
-    titleSize: '18px',
-    position: 'bottomCenter',
-    message: message,
-    maxWidth: '52%',
-    messageColor: '#fff',
+    titleSize: '22px',
+    message,
+    backgroundColor: '#EF4040',
+    messageColor: '#FAFAFB',
     messageSize: '16px',
-    backgroundColor: '#FF6868',
     close: false,
     closeOnClick: true,
+    closeOnEscape: true,
   });
-}
-
-function showLoader(state = true) {
-  refs.loaderElem.style.display = !state ? 'none' : 'inline-block';
-  refs.searchBtnElem.disabled = state;
 }
