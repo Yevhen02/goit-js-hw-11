@@ -35,11 +35,14 @@ refs.formElem.addEventListener('submit', event => {
       }
       refs.galleryElem.innerHTML = createMarkup(data.hits);
       showLoader(false);
-      new SimpleLightbox('.gallery-item a', {
+
+      const lightbox = new SimpleLightbox('.gallery-item a', {
         captionsData: 'alt',
         captionDelay: 250,
       });
+
       refs.formElem.reset();
+      lightbox.refresh();
     })
     .catch(error => console.error(error));
 });
