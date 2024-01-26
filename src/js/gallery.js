@@ -6,7 +6,7 @@ import 'izitoast/dist/css/iziToast.min.css';
 const refs = {
   formElem: document.querySelector('.search-form'),
   galleryElem: document.querySelector('.gallery'),
-  searchBtn: document.querySelector('.search-btn'),
+  searchBtnElem: document.querySelector('.search-btn'),
   loaderElem: document.querySelector('.loader'),
 };
 
@@ -51,7 +51,6 @@ function fetchImages(url) {
     if (!resp.ok) {
       throw new Error(resp.status);
     }
-    console.log(resp);
     return resp.json();
   });
 }
@@ -101,5 +100,5 @@ function createMessage(message) {
 
 function showLoader(state = true) {
   refs.loaderElem.style.display = !state ? 'none' : 'inline-block';
-  refs.searchBtn.disabled = state;
+  refs.searchBtnElem.disabled = state;
 }
