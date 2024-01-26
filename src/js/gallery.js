@@ -10,16 +10,14 @@ const refs = {
   loaderElem: document.querySelector('.loader'),
 };
 
-const BASE_URL = 'https://pixabay.com/';
+const BASE_URL = 'https://pixabay.com';
 const END_POINT = '/api';
 const API_KEY = '42034785-c436f003c310c5b5229f24b7b';
-
-let query = '';
 
 refs.formElem.addEventListener('submit', event => {
   event.preventDefault();
 
-  query = refs.formElem.query.value.trim();
+  const query = refs.formElem.query.value.trim();
 
   if (!query) {
     createMessage(`Please type a value in the "Search images" field!`);
