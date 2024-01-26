@@ -5,21 +5,163 @@
   |============================
 */
 @import url('./reset.css');
-@import url('./vite-promo.css');
-@import url('./header.css');
 
+/* General */
+/* ........................... */
 :root {
   font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
   font-size: 16px;
   line-height: 24px;
   font-weight: 400;
 
-  color: #242424;
-  background-color: rgba(255, 255, 255, 0.87);
-
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: 'Lato', sans-serif;
+  font-size: 14px;
+  font-style: normal;
+  background-color: #864af9;
+  border-radius: 15px;
+}
+
+/* Search */
+/* ........................... */
+.search-form {
+  margin-top: 40px;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.search-inp {
+  width: 440px;
+  height: 20px;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  padding: 20px;
+}
+
+.search-inp:hover {
+  outline: 1px solid #a1eebd;
+}
+
+.search-inp:focus {
+  outline: 1px solid #a1eebd;
+}
+
+.search-btn {
+  color: #a1eebd;
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  width: 120px;
+  height: 40px;
+  border-radius: 10px;
+  background-color: #864af9;
+  border: 1px solid;
+  outline: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.search-btn:hover,
+.search-btn:focus {
+  background-color: #3b3486;
+  box-shadow: 2px 2px 3px #a1eebd;
+}
+
+/* Gallery */
+/* ........................... */
+.gallery {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: center;
+  align-items: center;
+  padding: 0 20px 0 20px;
+}
+
+.gallery-item {
+  flex-basis: calc((100% - 48px) / 3);
+  background-color: #a1eebd;
+  border: 1px solid #a1eebd;
+  box-shadow: 2px 2px 4px #a1eebd;
+  transition: transform 250ms ease;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+}
+
+.gallery-item:hover {
+  transform: scale(1.03);
+}
+
+.gallery-image {
+  width: 100%;
+  height: 200px;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+}
+
+.gallery-descr {
+  font-size: 14px;
+  letter-spacing: 0.02em;
+  width: 90%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  padding: 5px 20px 0;
+}
+
+.descr-span {
+  font-weight: bold;
+  color: #711db0;
+}
+
+.gallery-descr {
+  font-weight: bold;
+  color: #333;
+}
+
+/* Loader content */
+/* ........................... */
+.loader {
+  width: 100%;
+  height: 4.8px;
+  display: none;
+  position: relative;
+  background: rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+}
+
+.loader::after {
+  content: '';
+  width: 1000px;
+  height: 2px;
+  background-color: #3b3486;
+  position: absolute;
+  top: 0;
+  left: 0;
+  box-sizing: border-box;
+  animation: animloader 3s linear infinite;
+}
+
+@keyframes animloader {
+  0% {
+    left: 0;
+    transform: translateX(-100%);
+  }
+
+  100% {
+    left: 100%;
+    transform: translateX(0%);
+  }
 }
