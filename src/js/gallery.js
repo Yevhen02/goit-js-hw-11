@@ -28,7 +28,9 @@ refs.formElem.addEventListener('submit', event => {
   fetchImages(url)
     .then(data => {
       if (data.hits.length === 0) {
-        createMessage(`Sorry, there are no such value!`);
+        createMessage(
+          `Sorry, there are no images matching your search query. Please try again!`
+        );
         showLoader(false);
       }
       refs.galleryElem.innerHTML = createMarkup(data.hits);
@@ -88,7 +90,7 @@ function createMessage(message) {
     titleSize: '18px',
     position: 'bottomCenter',
     message: message,
-    maxWidth: '42%',
+    maxWidth: '52%',
     messageColor: '#fff',
     messageSize: '16px',
     backgroundColor: '#FF6868',

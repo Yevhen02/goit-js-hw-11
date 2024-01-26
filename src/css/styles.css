@@ -144,9 +144,9 @@ body {
 
 .loader::after {
   content: '';
-  width: 1000px;
+  width: 100%;
   height: 2px;
-  background-color: #3b3486;
+  background-color: #a1eebd;
   position: absolute;
   top: 0;
   left: 0;
