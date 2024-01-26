@@ -11,7 +11,7 @@ const refs = {
 };
 
 const BASE_URL = 'https://pixabay.com/';
-const END_POINT = '/api/';
+const END_POINT = 'api';
 const API_KEY = '42034785-c436f003c310c5b5229f24b7b';
 
 refs.formElem.addEventListener('submit', event => {
