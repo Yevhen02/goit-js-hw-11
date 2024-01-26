@@ -39,7 +39,7 @@ refs.formElem.addEventListener('submit', event => {
       });
       refs.formElem.reset();
     })
-    .catch(error => console.error(error));
+    .catch(error => console.log(error));
 });
 
 function fetchImages(url) {
